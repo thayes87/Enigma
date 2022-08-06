@@ -3,23 +3,41 @@ class Enigma
   end
 
   def encrypt(message, key, date)
-    mod_message = message.downcase
+    modified_message = message.downcase.split("")
     encrypt_message = ""
     alphabet_set = ("a".."z").to_a << " " 
+    shift_dictionary = build_shift_dictionary(key, date) 
   
-
-    mod_message.each_char.map do |character|
+    modified_message.each_with_index do |character, index|
       if alphabet_set.include?(character)
-        alpha_position = alphabet_set.index(character)
-        shift = build_total_shift(key, date) 
-        # new_index = (alpha_position + shift) % alphabet_set.count
+        alphabet_position = alphabet_set.index(character)
+        shift = assign_shift(index, shift_dictionary)
+        new_index = (alphabet_position + shift) % alphabet_set.count
+        encrypt_message << alphabet_set[new_index]
       else
         encrypt_message << character 
       end
     end
+    {
+      encryption: encrypt_message,
+      key: key,
+      date: date
+    }
+  end
+  
+  def assign_shift(index, shift_dictionary)
+    if (index % 4).zero?
+      shift_dictionary[:A]
+    elsif ((index- 1) % 4).zero?
+      shift_dictionary[:B]
+    elsif ((index- 2) % 4).zero?
+      shift_dictionary[:C]
+    else
+      shift_dictionary[:D]
+    end
   end
 
-  def build_total_shift(key, date)
+  def build_shift_dictionary(key, date)
     key_shift = build_keys_shift(key)
     offset_shift = build_offset_shift(date)
     total_shift = Array.new
