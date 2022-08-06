@@ -10,7 +10,7 @@ RSpec.describe Enigma do
     end
   end 
   describe '#encrypt' do
-    it 'takes in argument(s) and returns a hash' do
+    xit 'takes in argument(s) and returns a hash' do
     enigma.encrypt("hello world", "02715", "040895")
     
     expected ({
@@ -25,47 +25,48 @@ RSpec.describe Enigma do
   end
 
   describe '#keys' do
-    xit 'splits up the key to find the shift' do
+    it 'splits up the key to find the shift' do
       enigma.encrypt("hello world", "02715", "040895")
 
-      expected {
+      expected = ({
         A: 02,
         B: 27,
         C: 71,
         D: 15
-      }
+      })
       
-      expect(enigma.encrypt.build_keys_shift).to eq(expected)
+      expect(enigma.build_keys_shift("02715")).to eq(expected)
     end
   end 
   
-  # describe '#offsets' do
-  #     xit 'generates a shift based on the provided date' do
-  #       enigma.encrypt("hello world", "02715", "040895")
+  describe '#build_offset_shift' do
+    it 'generates a shift based on the provided date' do
+      enigma.encrypt("hello world", "02715", "040895")
 
-  #       expected {
-  #         A: 1,
-  #         B: 0,
-  #         C: 2,
-  #         D: 5
-  #       }
+        expected = ({
+          A: 1,
+          B: 0,
+          C: 2,
+          D: 5
+        })
 
-  #       expect(enigma.encrypt.offsets).to eq(expected)
-  #     end
-  # end
+      expect(enigma.build_offset_shift("040895")).to eq(expected)
+    end
+  end
 
-  # describe '#total_shift' do
-  #   xit 'returns the total shift based on the keys and offset' do
-  #       enigma.encrypt("hello world", "02715", "040895")
+  describe '#total_shift' do
+    it 'returns the total shift based on the keys and offset' do
+      enigma.encrypt("hello world", "02715", "040895")
 
-  #       expected {
-  #         A: 3,
-  #         B: 27,
-  #         C: 73,
-  #         D: 20,
-  #       }
+        expected = ({
+          A: 3,
+          B: 27,
+          C: 73,
+          D: 20,
+        })
 
-  #       expect(enigma.excrypt.total_shift).to eq(expected)
-  #   end
-  # end
+      expect(enigma.total_shift("02715", "040895")).to eq(expected)
+        require 'pry'; binding.pry
+    end
+  end
 end
