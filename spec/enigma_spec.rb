@@ -92,11 +92,13 @@ RSpec.describe Enigma do
     it 'takes in argument(s) and returns a hash' do
       
       expected = {
-        encryption: "keder ohulw",
+        decryption: "hello world",
         key: "02715",
         date: "040895"
       }
 
-      expect(enigma.encrypt("keder ohulw", "02715", "040895")).to be_a(Hash)
-      expect(enigma.encrypt("keder ohulw", "02715", "040895")).to eq(expected)
-end 
+      expect(enigma.decrypt("keder ohulw", "02715", "040895")).to be_a(Hash)
+      expect(enigma.decrypt("keder ohulw", "02715", "040895")).to eq(expected)
+    end 
+  end 
+end
