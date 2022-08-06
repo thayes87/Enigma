@@ -1,2 +1,8 @@
 class Enigma
-end
+  def initialize
+  end
+
+  def encryption()
+
+  end 
+end 

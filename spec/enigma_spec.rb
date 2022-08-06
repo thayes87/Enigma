@@ -1,17 +1,26 @@
-require 'spec_helper'
-require './lib/enigma'
+require './spec_helper'
+require './enigma'
 
 RSpec.describe Enigma do 
+  let(:enigma) { Enigma.new }
+  describe '#initialize' do
+    it 'instantiates with state' do
 
-  let(:enigma_1) { Enigma.new("hello world", 12345, 040822) }
-  
-  describe "#initialize" do
-    it 'instantiates and has state' do
+      expect(enigma).to be_instance_of(Enigma)
+    end
 
-      expect(enigma_1).to be_instance_of(Enigma)
-      expect(enigma_1.encryption).to eq("hello world")
-      expect(enigma_1.key).to eq(12345)
-      expect(enigma_1.date).to eq(040822)
+  describe '#encrypt' do
+    it 'takes in argument(s) and returns a hash' do
+    enigma.encrypt("hello world", "02715", "040895")
+    
+    expected {
+          encryption: "keder ohulw",
+          key: "02715",
+          date: "040895"
+        }
+
+      expect(enigma.encrypt("hello world", "02715", "040895")).to be_a(Hash)
+      expect(enigma.encrypt("hello world", "02715", "040895")).to eq(expected)  
     end
   end
 end
