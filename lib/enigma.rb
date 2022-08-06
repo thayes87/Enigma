@@ -24,6 +24,10 @@ class Enigma
       date: date
     }
   end
+
+  def decrypt(message, key, date)
+    
+  end
   
   def assign_shift(index, shift_dictionary)
     if (index % 4).zero?
