@@ -87,4 +87,18 @@ RSpec.describe Enigma do
       expect(enigma.assign_shift(7, shift_dictionary)).to eq(20)
     end
   end
-end 
+  
+  describe '#decrypt' do
+    it 'takes in argument(s) and returns a hash' do
+      
+      expected = {
+        decryption: "hello world",
+        key: "02715",
+        date: "040895"
+      }
+
+      expect(enigma.decrypt("keder ohulw", "02715", "040895")).to be_a(Hash)
+      expect(enigma.decrypt("keder ohulw", "02715", "040895")).to eq(expected)
+    end 
+  end 
+end
