@@ -99,6 +99,17 @@ RSpec.describe Enigma do
 
       expect(enigma.decrypt("keder ohulw", "02715", "040895")).to be_a(Hash)
       expect(enigma.decrypt("keder ohulw", "02715", "040895")).to eq(expected)
+      enigma.random_number_generator
     end 
-  end 
+  end
+
+  describe '#random_number_generator' do
+    it 'generates a random 5 digit number' do
+
+      expect(enigma.random_number_generator).to be_a(String)
+      expect(enigma.random_number_generator.size).to eq(5)
+    end
+  end
+
+  
 end

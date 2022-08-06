@@ -93,4 +93,9 @@ class Enigma
     offset_shift[:D] = offset_indexes[3]
     offset_shift    
   end
+
+  def random_number_generator
+    number_set = Array("1".."9")
+    Array.new(5) { number_set.sample }.join
+  end
 end
