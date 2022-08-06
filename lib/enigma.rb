@@ -11,14 +11,25 @@ class Enigma
     mod_message.each_char.map do |character|
       if alphabet_set.include?(character)
         alpha_position = alphabet_set.index(character)
-        new_index = (alpha_position + total_shift) % alphabet_set.count
-      
+        shift = build_total_shift(key, date) 
+        # new_index = (alpha_position + shift) % alphabet_set.count
+      else
+        encrypt_message << character 
       end
     end
   end
 
-  def total_shift(key, date)
-
+  def build_total_shift(key, date)
+    key_shift = build_keys_shift(key)
+    offset_shift = build_offset_shift(date)
+    total_shift = Array.new
+    total_shift << key_shift
+    total_shift << offset_shift
+    total_shift.reduce do |final_hash, element| 
+      final_hash.merge(element) do 
+        |key, old_value, new_value| old_value + new_value
+      end
+    end
   end
   
   #method works, considering turning into array and using each_cons from battlship

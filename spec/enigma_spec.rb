@@ -54,7 +54,7 @@ RSpec.describe Enigma do
     end
   end
 
-  describe '#total_shift' do
+  describe '#build_total_shift' do
     it 'returns the total shift based on the keys and offset' do
       enigma.encrypt("hello world", "02715", "040895")
 
@@ -65,8 +65,7 @@ RSpec.describe Enigma do
           D: 20,
         })
 
-      expect(enigma.total_shift("02715", "040895")).to eq(expected)
-        require 'pry'; binding.pry
+      expect(enigma.build_total_shift("02715", "040895")).to eq(expected)
     end
   end
 end
