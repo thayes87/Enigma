@@ -2,7 +2,9 @@ class Enigma
   def initialize
   end
 
-  def encrypt(message, key, date)
+  def encrypt(message, key = nil, date = nil)
+    key = random_number_generator(key)
+    date = date_generator(date)
     modified_message = message.downcase.split("")
     encrypt_message = ""
     alphabet_set = ("a".."z").to_a << " " 
@@ -94,8 +96,26 @@ class Enigma
     offset_shift    
   end
 
-  def random_number_generator
-    number_set = Array("1".."9")
-    Array.new(5) { number_set.sample }.join
+  def random_number_generator(key)
+    if key.nil?
+      number_set = Array("1".."9")
+      Array.new(5) { number_set.sample }.join
+    elsif
+      key.length < 5
+      key.rjust(5, "0")
+    elsif
+      key.length > 5
+      key.split("").first(5).join
+    else  
+      key
+    end
+  end
+
+  def date_generator(date)
+    if date.nil?
+      Date.today.strftime ("%m%d%y")
+    else
+      date
+    end
   end
 end

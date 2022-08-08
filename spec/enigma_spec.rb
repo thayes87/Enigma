@@ -23,6 +23,17 @@ RSpec.describe Enigma do
       expect(enigma.encrypt("hello world", "02715", "040895")).to be_a(Hash)
       expect(enigma.encrypt("hello world", "02715", "040895")).to eq(expected)  
     end
+
+    it 'can account for not alphabetic characters in a message' do
+      
+      expected = {
+        encryption: "keder ohulw!",
+        key: "02715",
+        date: "040895"
+      }
+
+      expect(enigma.encrypt("hello world!", "02715", "040895")).to eq(expected)
+    end
   end
 
   describe '#keys' do
@@ -99,17 +110,45 @@ RSpec.describe Enigma do
 
       expect(enigma.decrypt("keder ohulw", "02715", "040895")).to be_a(Hash)
       expect(enigma.decrypt("keder ohulw", "02715", "040895")).to eq(expected)
-      enigma.random_number_generator
-    end 
-  end
+    end
 
-  describe '#random_number_generator' do
-    it 'generates a random 5 digit number' do
+    it 'can account for non-alphabetic charaters' do
 
-      expect(enigma.random_number_generator).to be_a(String)
-      expect(enigma.random_number_generator.size).to eq(5)
+      expected = {
+        decryption: "hello world!",
+        key: "02715",
+        date: "040895"
+      }
+      
+      expect(enigma.decrypt("keder ohulw!", "02715", "040895")).to eq(expected)
     end
   end
 
-  
+  describe '#random_number_generator' do
+    it 'generates a random 5 digit number if none is provided' do
+
+      expect(enigma.random_number_generator(nil)).to be_a(String)
+      expect(enigma.random_number_generator(nil).size).to eq(5)
+    end
+
+    it 'can handle a key less than 5 digits' do
+
+      expect(enigma.random_number_generator("234").size).to eq(5)
+      expect(enigma.random_number_generator("78")).to eq("00078")
+    end
+
+    it 'can handle a key greater than 5 digits' do 
+
+      expect(enigma.random_number_generator("1234567").size).to eq(5)
+      expect(enigma.random_number_generator("1234567")).to eq("12345")
+    end
+  end
+
+  describe 'date_generator' do
+    it 'generates the date of submission if no date is provided' do
+
+      expect(enigma.date_generator(nil).size).to eq(6)
+      expect(enigma.date_generator(nil)).to eq(Date.today.strftime ("%m%d%y"))
+    end
+  end
 end
