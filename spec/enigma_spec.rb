@@ -60,12 +60,4 @@ RSpec.describe Enigma do
       expect(enigma.decrypt("keder ohulw!", "02715", "040895")).to eq(expected)
     end
   end
-  
-  describe 'date_generator' do
-    it 'generates the date of submission if no date is provided' do
-
-      expect(enigma.date_generator(nil).size).to eq(6)
-      expect(enigma.date_generator(nil)).to eq(Date.today.strftime ("%m%d%y"))
-    end
-  end
 end
