@@ -1,4 +1,3 @@
-require './enigma'
 class ShiftGenerator 
   
   def self.build_shift_dictionary(key, date)
@@ -26,7 +25,7 @@ class ShiftGenerator
     end
   end
   
-  private 
+  private
   
   def self.build_keys_shift(key) 
     key_shift = Hash.new

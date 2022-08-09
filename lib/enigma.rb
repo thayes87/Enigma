@@ -1,12 +1,11 @@
 require 'Date'
 require './shift_generator'
+require './key_generator'
 
 class Enigma
-  def initialize
-  end
-
+ 
   def encrypt(message, key = nil, date = nil)
-    key = random_number_generator(key)
+    key = KeyGenerator.generate_key(key)
     date = date_generator(date)
     modified_message = message.downcase.split("")
     encrypt_message = ""
@@ -53,21 +52,6 @@ class Enigma
     }
   end
   
-  def random_number_generator(key)
-    if key.nil?
-      number_set = Array("1".."9")
-      Array.new(5) { number_set.sample }.join
-    elsif
-      key.length < 5
-      key.rjust(5, "0")
-    elsif
-      key.length > 5
-      key.split("").first(5).join
-    else  
-      key
-    end
-  end
-
   def date_generator(date)
     if date.nil?
       Date.today.strftime ("%m%d%y")
