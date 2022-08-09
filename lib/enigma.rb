@@ -10,7 +10,7 @@ class Enigma
     key = KeyGenerator.generate_key(key)
     date = DateGenerator.generate_date(date)
     modified_message = message.downcase.split("")
-    encrypt_message = ""
+    output_text = ""
     shift_dictionary = ShiftGenerator.build_shift_dictionary(key, date)
     
     modified_message.each_with_index do |character, index|
@@ -18,37 +18,38 @@ class Enigma
         alphabet_position = ALPHABET_SET.index(character)
         shift = ShiftGenerator.assign_shift(index, shift_dictionary)
         new_index = (alphabet_position + shift) % ALPHABET_SET.count
-        encrypt_message << ALPHABET_SET[new_index]
+        output_text << ALPHABET_SET[new_index]
       else
-        encrypt_message << character 
+        output_text << character 
       end
     end
     {
-      encryption: encrypt_message,
+      encryption: output_text,
       key: key,
       date: date
     }
   end
 
-  def decrypt(message, key, date)
+  def decrypt(message, key, date = nil)
+    date = DateGenerator.generate_date(date)
     modified_message = message.downcase.split("")
-    decrypt_message = ""
+    output_text = ""
     shift_dictionary = ShiftGenerator.build_shift_dictionary(key, date)
-    
+   
     modified_message.each_with_index do |character, index|
       if ALPHABET_SET.include?(character)
         alphabet_position = ALPHABET_SET.index(character)
         shift = ShiftGenerator.assign_shift(index, shift_dictionary)
         new_index = (alphabet_position - shift) % ALPHABET_SET.count
-        decrypt_message << ALPHABET_SET[new_index]
+        output_text << ALPHABET_SET[new_index]
       else
-        decrypt_message << character
+        output_text << character
       end
     end
     {
-      decryption: decrypt_message,
+      decryption: output_text,
       key: key,
       date: date
     }
-  end 
+  end
 end
