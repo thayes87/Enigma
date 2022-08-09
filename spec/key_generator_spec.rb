@@ -15,7 +15,7 @@ RSpec.describe KeyGenerator do
       expect(described_class.generate_key("78")).to eq("00078")
     end
 
-    it 'can handle a key greater than 5 digits' do 
+    it 'can handle a key greater than 5 digits' do
 
       expect(described_class.generate_key("1234567").size).to eq(5)
       expect(described_class.generate_key("1234567")).to eq("12345")
