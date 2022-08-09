@@ -1,4 +1,4 @@
-require './enigma'
+require './lib/enigma'
 class FileReader
   class << self
     def encrypt_file(input_file, output_file)
@@ -15,7 +15,6 @@ class FileReader
     def decrypt_file(input_file, output_file, key, date)
       incoming_text = read_file(input_file)
       enigma = Enigma.new
-
       decryption_hash = enigma.decrypt(incoming_text, key, date)
 
       write_file(output_file, decryption_hash)
@@ -32,9 +31,10 @@ class FileReader
       incoming_text
     end
 
-    def write_file(output_file, encryption_hash)
+    def write_file(output_file, output_hash)
+      output_text = output_hash.dig(:decryption) || output_hash.dig(:encryption)
       writer = File.open(output_file, 'w')
-      writer.write(encryption_hash[:encryption])
+      writer.write(output_text)
       writer.close
     end
   end

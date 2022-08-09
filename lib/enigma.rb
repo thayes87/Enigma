@@ -1,7 +1,7 @@
 require 'Date'
-require './shift_generator'
-require './key_generator'
-require './date_generator'
+require './lib/shift_generator'
+require './lib/key_generator'
+require './lib/date_generator'
 
 class Enigma
   ALPHABET_SET = ('a'..'z').to_a << ' '
