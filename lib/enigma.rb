@@ -1,17 +1,22 @@
-class Enigma
-  def initialize
-  end
+require 'Date'
+require './shift_generator'
+require './key_generator'
+require './date_generator'
 
-  def encrypt(message, key, date)
+class Enigma
+ 
+  def encrypt(message, key = nil, date = nil)
+    key = KeyGenerator.generate_key(key)
+    date = DateGenerator.generate_date(date)
     modified_message = message.downcase.split("")
     encrypt_message = ""
     alphabet_set = ("a".."z").to_a << " " 
-    shift_dictionary = build_shift_dictionary(key, date) 
-  
+    shift_dictionary = ShiftGenerator.build_shift_dictionary(key, date)
+    
     modified_message.each_with_index do |character, index|
       if alphabet_set.include?(character)
         alphabet_position = alphabet_set.index(character)
-        shift = assign_shift(index, shift_dictionary)
+        shift = ShiftGenerator.assign_shift(index, shift_dictionary)
         new_index = (alphabet_position + shift) % alphabet_set.count
         encrypt_message << alphabet_set[new_index]
       else
@@ -29,12 +34,12 @@ class Enigma
     modified_message = message.downcase.split("")
     decrypt_message = ""
     alphabet_set = ("a".."z").to_a << " "
-    shift_dictionary = build_shift_dictionary(key, date)
+    shift_dictionary = ShiftGenerator.build_shift_dictionary(key, date)
     
     modified_message.each_with_index do |character, index|
       if alphabet_set.include?(character)
         alphabet_position = alphabet_set.index(character)
-        shift = assign_shift(index, shift_dictionary)
+        shift = ShiftGenerator.assign_shift(index, shift_dictionary)
         new_index = (alphabet_position - shift) % alphabet_set.count
         decrypt_message << alphabet_set[new_index]
       else
@@ -46,51 +51,5 @@ class Enigma
       key: key,
       date: date
     }
-  end
-  
-  def assign_shift(index, shift_dictionary)
-    if (index % 4).zero?
-      shift_dictionary[:A]
-    elsif ((index- 1) % 4).zero?
-      shift_dictionary[:B]
-    elsif ((index- 2) % 4).zero?
-      shift_dictionary[:C]
-    else
-      shift_dictionary[:D]
-    end
-  end
-
-  def build_shift_dictionary(key, date)
-    key_shift = build_keys_shift(key)
-    offset_shift = build_offset_shift(date)
-    total_shift = Array.new
-    total_shift << key_shift
-    total_shift << offset_shift
-    total_shift.reduce do |final_hash, element| 
-      final_hash.merge(element) do 
-        |key, old_value, new_value| old_value + new_value
-      end
-    end
-  end
-  
-  #method works, considering turning into array and using each_cons from battlship
-  def build_keys_shift(key) 
-    key_shift = Hash.new
-    key_shift[:A] = key[0, 2].to_i
-    key_shift[:B] = key[1, 2].to_i
-    key_shift[:C] = key[2, 2].to_i
-    key_shift[:D] = key[3, 4].to_i
-    key_shift
-  end
-
-  def build_offset_shift(date)
-    square_total = (date.to_i * date.to_i)
-    offset_indexes = square_total.digits.reverse.last(4)
-    offset_shift = Hash.new
-    offset_shift[:A] = offset_indexes[0]
-    offset_shift[:B] = offset_indexes[1]
-    offset_shift[:C] = offset_indexes[2]
-    offset_shift[:D] = offset_indexes[3]
-    offset_shift    
-  end
+  end 
 end

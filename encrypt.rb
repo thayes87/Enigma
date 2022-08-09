@@ -1,19 +1,10 @@
 require './lib/enigma'
+require './lib/file_reader'
 
-handle = File.open(ARGV[0], "r")
+# incoming_text = FileReader.read_file
+input_file = ARGV[0] 
+output_file = ARGV[1]
 
-incoming_text = handle.read
+encryption_hash = FileReader.encrypt_file(input_file, output_file)
 
-handle.close
-
-enigma = Enigma.new
-
-encryption_hash = enigma.encrypt(incoming_text, "02715", "040895")
-
-writer = File.open(ARGV[1], "w")
-
-writer.write(encryption_hash[:encryption])
-
-writer.close
-
-puts "Created '#{ARGV[1]}' with the key #{encryption_hash[:key]} enigma and date #{encryption_hash[:date]}"
+puts "Created '#{output_file}' with the key #{encryption_hash[:key]} enigma and date #{encryption_hash[:date]}"
