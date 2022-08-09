@@ -1,7 +1,7 @@
 require './enigma'
 class FileReader
   class << self
-    def self.encrypt_file(input_file, output_file)
+    def encrypt_file(input_file, output_file)
       incoming_text = read_file(input_file)
       enigma = Enigma.new
 
@@ -12,7 +12,7 @@ class FileReader
       encryption_hash
     end
 
-    def self.decrypt_file(input_file, output_file, key, date)
+    def decrypt_file(input_file, output_file, key, date)
       incoming_text = read_file(input_file)
       enigma = Enigma.new
 
@@ -25,16 +25,17 @@ class FileReader
 
     private
 
-    def self.read_file(input_file)
+    def read_file(input_file)
       handle = File.open(input_file, 'r')
       incoming_text = handle.read
       handle.close
       incoming_text
     end
 
-    def self.write_file(output_file, encryption_hash)
+    def write_file(output_file, encryption_hash)
       writer = File.open(output_file, 'w')
       writer.write(encryption_hash[:encryption])
       writer.close
     end
   end
+end
