@@ -1,40 +1,41 @@
-require './enigma'
+require './lib/enigma'
 class FileReader
+  class << self
+    def encrypt_file(input_file, output_file)
+      incoming_text = read_file(input_file)
+      enigma = Enigma.new
 
-  def self.encrypt_file(input_file, output_file)
-    incoming_text = read_file(input_file)
-    enigma = Enigma.new
+      encryption_hash = enigma.encrypt(incoming_text, "02715", "040895") #=> leaving in for testing purposes
 
-    encryption_hash = enigma.encrypt(incoming_text, "02715", "040895") #=> leaving in for testing purposes
+      write_file(output_file, encryption_hash)
 
-    write_file(output_file, encryption_hash)
-    
-    encryption_hash
-  end 
+      encryption_hash
+    end
 
-  def self.decrypt_file(input_file, output_file, key, date)
-    incoming_text = read_file(input_file)
-    enigma = Enigma.new
+    def decrypt_file(input_file, output_file, key, date)
+      incoming_text = read_file(input_file)
+      enigma = Enigma.new
+      decryption_hash = enigma.decrypt(incoming_text, key, date)
 
-    decryption_hash = enigma.decrypt(incoming_text, key, date)
-    
-    write_file(output_file, decryption_hash)
-    
-    decryption_hash
-  end
+      write_file(output_file, decryption_hash)
 
-  private 
+      decryption_hash
+    end
 
-  def self.read_file(input_file)
-    handle = File.open(input_file, "r")
-    incoming_text = handle.read
-    handle.close 
-    incoming_text
-  end
+    private
 
-  def self.write_file(output_file, encryption_hash)
-    writer = File.open(output_file, "w")
-    writer.write(encryption_hash[:encryption])
-    writer.close
+    def read_file(input_file)
+      handle = File.open(input_file, 'r')
+      incoming_text = handle.read
+      handle.close
+      incoming_text
+    end
+
+    def write_file(output_file, output_hash)
+      output_text = output_hash.dig(:decryption) || output_hash.dig(:encryption)
+      writer = File.open(output_file, 'w')
+      writer.write(output_text)
+      writer.close
+    end
   end
 end

@@ -1,55 +1,55 @@
 require 'Date'
-require './shift_generator'
-require './key_generator'
-require './date_generator'
+require './lib/shift_generator'
+require './lib/key_generator'
+require './lib/date_generator'
 
 class Enigma
- 
+  ALPHABET_SET = ('a'..'z').to_a << ' '
+
   def encrypt(message, key = nil, date = nil)
     key = KeyGenerator.generate_key(key)
     date = DateGenerator.generate_date(date)
-    modified_message = message.downcase.split("")
-    encrypt_message = ""
-    alphabet_set = ("a".."z").to_a << " " 
+    modified_message = message.downcase.split('')
+    output_text = ""
     shift_dictionary = ShiftGenerator.build_shift_dictionary(key, date)
-    
+
     modified_message.each_with_index do |character, index|
-      if alphabet_set.include?(character)
-        alphabet_position = alphabet_set.index(character)
+      if ALPHABET_SET.include?(character)
+        alphabet_position = ALPHABET_SET.index(character)
         shift = ShiftGenerator.assign_shift(index, shift_dictionary)
-        new_index = (alphabet_position + shift) % alphabet_set.count
-        encrypt_message << alphabet_set[new_index]
+        new_index = (alphabet_position + shift) % ALPHABET_SET.count
+        output_text << ALPHABET_SET[new_index]
       else
-        encrypt_message << character 
+        output_text << character
       end
     end
     {
-      encryption: encrypt_message,
+      encryption: output_text,
       key: key,
       date: date
     }
   end
 
-  def decrypt(message, key, date)
-    modified_message = message.downcase.split("")
-    decrypt_message = ""
-    alphabet_set = ("a".."z").to_a << " "
+  def decrypt(message, key, date = nil)
+    date = DateGenerator.generate_date(date)
+    modified_message = message.downcase.split('')
+    output_text = ""
     shift_dictionary = ShiftGenerator.build_shift_dictionary(key, date)
-    
+
     modified_message.each_with_index do |character, index|
-      if alphabet_set.include?(character)
-        alphabet_position = alphabet_set.index(character)
+      if ALPHABET_SET.include?(character)
+        alphabet_position = ALPHABET_SET.index(character)
         shift = ShiftGenerator.assign_shift(index, shift_dictionary)
-        new_index = (alphabet_position - shift) % alphabet_set.count
-        decrypt_message << alphabet_set[new_index]
+        new_index = (alphabet_position - shift) % ALPHABET_SET.count
+        output_text << ALPHABET_SET[new_index]
       else
-        decrypt_message << character
+        output_text << character
       end
     end
     {
-      decryption: decrypt_message,
+      decryption: output_text,
       key: key,
       date: date
     }
-  end 
+  end
 end
