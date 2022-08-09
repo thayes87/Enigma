@@ -24,7 +24,7 @@ RSpec.describe Enigma do
       expect(enigma.encrypt("hello world", "02715", "040895")).to eq(expected)  
     end
 
-    it 'can account for not alphabetic characters in a message' do
+    it 'can account for non-alphabetic characters in a message' do
       
       expected = {
         encryption: "keder ohulw!",

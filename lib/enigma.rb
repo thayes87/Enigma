@@ -1,3 +1,4 @@
+require 'Date'
 class Enigma
   def initialize
   end
@@ -8,7 +9,7 @@ class Enigma
     modified_message = message.downcase.split("")
     encrypt_message = ""
     alphabet_set = ("a".."z").to_a << " " 
-    shift_dictionary = build_shift_dictionary(key, date) 
+    shift_dictionary = build_shift_dictionary(key, date)
   
     modified_message.each_with_index do |character, index|
       if alphabet_set.include?(character)
