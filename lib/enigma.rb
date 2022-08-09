@@ -4,15 +4,15 @@ require './key_generator'
 require './date_generator'
 
 class Enigma
-  ALPHABET_SET = ("a".."z").to_a << " "
- 
+  ALPHABET_SET = ('a'..'z').to_a << ' '
+
   def encrypt(message, key = nil, date = nil)
     key = KeyGenerator.generate_key(key)
     date = DateGenerator.generate_date(date)
-    modified_message = message.downcase.split("")
+    modified_message = message.downcase.split('')
     output_text = ""
     shift_dictionary = ShiftGenerator.build_shift_dictionary(key, date)
-    
+
     modified_message.each_with_index do |character, index|
       if ALPHABET_SET.include?(character)
         alphabet_position = ALPHABET_SET.index(character)
@@ -20,7 +20,7 @@ class Enigma
         new_index = (alphabet_position + shift) % ALPHABET_SET.count
         output_text << ALPHABET_SET[new_index]
       else
-        output_text << character 
+        output_text << character
       end
     end
     {
@@ -32,10 +32,10 @@ class Enigma
 
   def decrypt(message, key, date = nil)
     date = DateGenerator.generate_date(date)
-    modified_message = message.downcase.split("")
+    modified_message = message.downcase.split('')
     output_text = ""
     shift_dictionary = ShiftGenerator.build_shift_dictionary(key, date)
-   
+
     modified_message.each_with_index do |character, index|
       if ALPHABET_SET.include?(character)
         alphabet_position = ALPHABET_SET.index(character)
